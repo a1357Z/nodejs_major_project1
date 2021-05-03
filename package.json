@@ -1,0 +1,15 @@
+{
+  "name": "codeial_major_project1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "script1" : "nodemon index.js"
+  },
+  "author": "ajay",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
