@@ -1,5 +1,5 @@
 var profile = (req,res)=>{
-    res.send('<h1>user profile</h1>')
+    res.render('users',{title: 'users profile'})
 }
 
 module.exports = profile

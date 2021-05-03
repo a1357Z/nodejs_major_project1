@@ -1,7 +1,7 @@
 
 
 var home= (req,res)=>{
-    return res.send('<h1>sending this text from the home controller</h1>')
+    return res.render('home',{title : 'home Page'})
 }
 
 module.exports = home
