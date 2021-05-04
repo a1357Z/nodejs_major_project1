@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/3452448514.js" crossorigin="anonymous"></script>
+    <title>Todo List</title>
+</head>
+<body>
+    
+        <div class="heading">
+            <h1>TODO LIST APP</h1>
+        </div>
+    
+    <form action="/add" method="post">
+        <div class="wrapper">
+            <div class="input">
+                <label for="description" class="bold" >Task</label>
+                <br>
+                <input type="text" placeholder="what is your task?" name="taskName">
+            </div>
+            <div class="input">
+                <label for="category" class="bold">Select Category</label>
+                <br>
+                <select name="category" id="category">
+                    <%categories.forEach(category=>{%>
+                        <option value="<%=category%>"><%=category%></option>
+                    <%})%>
+                    
+                </select>
+            </div>
+            <div>
+                <label for="" class="bold">Due date</label>
+                <br>
+                <input type="date" name="dueDate">
+            </div>
+            <div>
+                <!-- <label for="" class="bold">Submit</label> -->
+                <br>
+                <button type="submit">Submit</button>
+            </div>
+        </div>   
+    </form>
+
+    <div class="heading">
+        <h1>YOUR TASKS</h1>
+    </div>
+    <div class="cover">
+        <form action="/delete" method="POST" style="padding:20px;">
+            <div class="task">
+
+                <div class="checkbox">
+                    <p class="bold">Select</p>
+                </div>
+                <div class="task-data">
+                <p class="bold">Task Name</p>
+                </div>
+                <div class="category">
+                <p class="bold">Category</p>
+                </div>
+                <div class="category">
+                <p class="bold">Due Date</p>
+                </div>
+                <%tasksList.forEach(task=>{%>
+                    <div class="checkbox">
+                        <input type="checkbox">
+                    </div>
+                    <div class="task-data">
+                        <%=task.taskName%>
+                    </div>
+                    <div class="category">
+                        <%=task.category%>
+                    </div>
+                    <div class="category">
+                        <%=task.dueDate%>
+                    </div>
+                <%})%>
+                <div>
+                    <label for="" class="bold">Delete</label>
+                    <br>
+                    <button><i class="fas fa-trash-alt"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+</body>
+</html>
