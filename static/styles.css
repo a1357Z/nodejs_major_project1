@@ -1,3 +1,34 @@
+/* styling of html tags */
+
+:root {
+  --content-clr: ivory;
+}
+
+body {
+  background-color: #34656d;
+  color: var(--content-clr);
+  font-family: 'Montserrat', sans-serif;
+}
+
+input,
+select,
+button,
+option {
+  background-color: inherit;
+  color: var(--content-clr);
+  border: 1px solid var(--content-clr);
+  border-radius: 10px;
+  padding: 3px 4px;
+  font-family: inherit;
+}
+
+::placeholder {
+  color: var(--content-clr);
+  font-family: inherit;
+}
+
+/* styling of classes */
+
 .wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -12,28 +43,6 @@
   display: grid;
   grid-template-columns: 1fr;
   text-align: center;
-}
-
-body {
-  background-color: rebeccapurple;
-  color: white;
-  font-family: 'Montserrat', sans-serif;
-}
-
-input,
-select,
-button,
-option {
-  background-color: inherit;
-  color: ivory;
-  border: 1px solid ivory;
-  border-radius: 10px;
-  padding: 3px 4px;
-  font-family: inherit;
-}
-::placeholder {
-  color: ivory;
-  font-family: inherit;
 }
 
 .task {
@@ -51,4 +60,9 @@ option {
 .cover {
   display: flex;
   justify-content: center;
+}
+
+.cover form {
+  padding: 20px;
+  border: 1px solid var(--content-clr);
 }

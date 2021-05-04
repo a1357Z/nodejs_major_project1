@@ -1,22 +1,29 @@
+
+ //getting the model and the database file running
 require('../config/database')
 const Todo = require('../models/todo-item')
 
+//the various categories for a todo item
 let categories=['home','work', 'school', 'voluntary']
 
-var home= async (req,res)=>{
+var homeController= async (req,res)=>{
     try{
         let data = await Todo.find({})
-        //console.log(data);
+        
+        //creating an items array with the modified due dates or with no due date
         let items = data.map(item=>{
-            let date = new Date(item.dueDate)
-            //could not implement the following command
-            //item.dueDate = date.toLocaleDateString()
             let obj={}
             obj._id = item._id
             obj.taskName = item.taskName
             obj.category = item.category
-            obj.dueDate = date.toLocaleDateString()
-             //console.log( obj.dueDate);
+
+            if(item.dueDate){
+                let date = new Date(item.dueDate)
+                obj.dueDate = date.toLocaleDateString()
+            }else{
+                obj.dueDate = 'no deadline'
+            }
+            
              return obj
         })
         return res.render('todoList',{categories,tasksList : items})
@@ -27,4 +34,4 @@ var home= async (req,res)=>{
     
 }
 
-module.exports = home
+module.exports = homeController

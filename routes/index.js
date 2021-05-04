@@ -1,12 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const homeController = require('../controllers/home_controller')
+
+//getting the controllers
+const homeController = require('../controllers/homeController')
 const addTaskController = require('../controllers/addTaskController')
 const deleteTaskController = require('../controllers/deleteTaskController')
 
 router.use(express.urlencoded({ extended: true }))
+
+//handling the requests
 router.get('/',homeController)
 router.post('/add',addTaskController)
-//router.delete('/delete',deleteTaskController)
+router.post('/delete',deleteTaskController)
 
 module.exports = router

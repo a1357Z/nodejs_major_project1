@@ -1,8 +1,10 @@
-// const mongoose = require('mongoose')
+//getting the model and the database file running
 const Todo = require('../models/todo-item')
 require('../config/database')
-const add =  async (req,res) =>{
-    console.log(req.body);
+
+//executing the add task functionality
+const addTask =  async (req,res) =>{
+
     try{
         const todo = await Todo.create(req.body)
         console.log('created',todo);
@@ -12,4 +14,4 @@ const add =  async (req,res) =>{
     res.redirect('/')
 }
 
-module.exports = add;
+module.exports = addTask;
