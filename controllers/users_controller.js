@@ -1,5 +1,5 @@
 var profile = (req,res)=>{
-    res.render('users',{title: 'users profile'})
+    res.render('users-profile',{title: 'users profile'})
 }
 
 module.exports = profile
