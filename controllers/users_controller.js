@@ -1,16 +1,24 @@
 const User = require('../models/user')
 
+
 var profile = (req,res)=>{
-    res.render('users-profile',{title: 'users profile'})
+    console.log('res.locals is ',res.locals);
+    res.render('users-profile',{title: 'users profile',user : res.locals.user})
 }
 
 //render signup page
 var signUp = (req,res)=>{
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile')
+     }
     res.render('user_sign_up',{title : 'Codeial | Sign Up'})
 }
 
 //render signin page
 var signIn = (req,res)=>{
+    if(req.isAuthenticated()){
+       return res.redirect('/users/profile')
+    }
     res.render('user_sign_in',{title : 'Codeial | Sign In'})
 }
 
@@ -40,7 +48,20 @@ User.findOne({email : req.body.email},(err,user)=>{
 
 //log in the user
 var createSession =(req,res)=>{
-
+    // console.log('the modified request after authentication is ',req);
+    // console.log('the cookies are ',res.cookies);
+    return res.redirect('/')
 }
 
-module.exports = {profile, signUp ,signIn, create,createSession}
+var endSession = (req,res)=>{
+    req.session.destroy(err=>{
+        if(err){
+            return console.log(err);
+        }
+        return res.redirect('/users/sign-in')
+    })
+}
+
+
+
+module.exports = {profile, signUp ,signIn, create,createSession, endSession}

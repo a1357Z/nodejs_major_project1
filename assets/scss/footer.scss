@@ -1,0 +1,15 @@
+footer {
+  display: flex;
+  align-items: center;
+  background-color: peru;
+  color: ivory;
+  font-family: 'Montserrat', sans-serif;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  p {
+    margin-left: 10px;
+  }
+}

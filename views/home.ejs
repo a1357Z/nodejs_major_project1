@@ -1,3 +1,24 @@
-
-    <h1>this is codeial, <%=title%></h1>
+<link rel="stylesheet" href="/css/home.css">
+<div>
     
+    <h1>this is codeial, <%=title%></h1>
+    <%if(locals.user){%>
+        <section id="feed-posts">
+            <h4>Posts</h4>
+            <form action="/posts/create" method="POST" id="new-post-form">
+                <textarea name="content" id="" cols="30" rows="3"></textarea>
+                <input type="submit" value="submit">
+            </form>
+        </section>
+    <%}%>
+
+    <ul>
+        <h1>Posts are </h1>
+        <%post.forEach(p=>{%>
+            <li><%=p.content%></li>
+            <li><%=p.user.name%></li>
+       <% })%>
+    </ul>
+    
+</div>
+
