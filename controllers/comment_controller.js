@@ -28,7 +28,7 @@ const Post = require('../models/post')
 // }
 
 
-module.exports = addComment =(req,res)=>{
+module.exports.addComment =(req,res)=>{
     Post.findById(req.body.post, async(err,post)=>{
         if(err){
             return console.log(err);
@@ -48,6 +48,29 @@ module.exports = addComment =(req,res)=>{
                 return console.log(e);
             }
             
+        }
+    })
+}
+
+module.exports.deleteComment=(req,res)=>{
+    Comment.findById(req.params.id,async (err,comment)=>{
+        if(err){
+            return console.log(err);
+        }
+        if(comment.user == req.user.id){
+            // let post = await Post.findById(comment.post)
+            // let newCommentsArray = post.comments.filter(comment=>comment !== req.params.id)
+            // post.comments= newCommentsArray
+            // await post.save()
+
+            Post.findByIdAndUpdate(comment.post,{$pull : {comments : req.params.id}},async(err,obj)=>{
+                await comment.remove()
+                return res.redirect('back')
+            })
+            
+            
+        }else{
+            return res.redirect('back');
         }
     })
 }

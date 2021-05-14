@@ -17,12 +17,16 @@
         <ul> 
             <%post.forEach(p=>{%>
                 <li>
+                    <%if(locals.user && (p.user.id == locals.user.id)){%>
+                        <a href="/posts/delete/<%=p._id%>"> Delete Post</a>
+                    <%}%>
                     <p>
                         <%=p.content%>
                     </p>
                     <small><span>Author is :</span><%=p.user.name%></small>
                     
                     <%if(locals.user){%>
+                        
                         <div class="commment-container">
                             <form action="/comments/create" method="POST">
                                 <input type="text" name="comment" placeholder="comment here" required>
@@ -34,7 +38,13 @@
                     <%}%>
                     <div class="post-comments-list">
                         <%p.comments.forEach(comment=>{%>
-                            <p><%=comment.comment%> by : <%=comment.user.name%></p>
+                            <p>
+                                <%=comment.comment%> by : <%=comment.user.name%>
+                                <%if(locals.user && locals.user.id == comment.user.id){%>
+                                    <span><a href="/comments/delete/<%=comment.id%>">delete comment</a></span> 
+                                <%}%>
+                                 
+                            </p>
                         <%})%>
                     </div>
                 </li>
