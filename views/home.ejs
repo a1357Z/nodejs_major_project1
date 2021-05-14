@@ -1,24 +1,49 @@
 <link rel="stylesheet" href="/css/home.css">
-<div>
+<div class="main-container">
     
     <h1>this is codeial, <%=title%></h1>
     <%if(locals.user){%>
         <section id="feed-posts">
             <h4>Posts</h4>
             <form action="/posts/create" method="POST" id="new-post-form">
-                <textarea name="content" id="" cols="30" rows="3"></textarea>
+                <textarea name="content" id="" cols="30" rows="3" required></textarea>
                 <input type="submit" value="submit">
             </form>
         </section>
     <%}%>
 
-    <ul>
+    <div class="posts-list-container">
         <h1>Posts are </h1>
-        <%post.forEach(p=>{%>
-            <li><%=p.content%></li>
-            <li><%=p.user.name%></li>
-       <% })%>
-    </ul>
+        <ul> 
+            <%post.forEach(p=>{%>
+                <li>
+                    <p>
+                        <%=p.content%>
+                    </p>
+                    <small><span>Author is :</span><%=p.user.name%></small>
+                    
+                    <%if(locals.user){%>
+                        <div class="commment-container">
+                            <form action="/comments/create" method="POST">
+                                <input type="text" name="comment" placeholder="comment here" required>
+                                <input type="hidden" name="post" value=<%=p._id%>>
+                                <input type="submit"  >
+                            </form>
+                        </div>
+
+                    <%}%>
+                    <div class="post-comments-list">
+                        <%p.comments.forEach(comment=>{%>
+                            <p><%=comment.comment%> by : <%=comment.user.name%></p>
+                        <%})%>
+                    </div>
+                </li>
+                
+                
+           <% })%>
+        </ul>
+    </div>
+    
     
 </div>
 

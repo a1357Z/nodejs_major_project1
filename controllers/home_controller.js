@@ -21,12 +21,12 @@ var home = (req,res)=>{
     //     });
     // })
 
-    Post.find({}).populate('user').exec((err,post)=>{
+    Post.find({}).populate('user').populate({path : 'comments', populate :{path:'user'}}).exec((err,post)=>{
         if(err){
             return console.log(err);
         }
-        console.log('the post is',post);
-        
+        //console.log('the post is',post);
+        console.log('the posts are ',post);
         return res.render('home',{title : 'home Page',post})
     })
     

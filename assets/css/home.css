@@ -1,2 +1,5 @@
-div {
+.main-container {
   min-height: 80vh; }
+
+body {
+  text-align: left; }

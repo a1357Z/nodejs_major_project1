@@ -15,4 +15,10 @@ var addPost = (req,res)=>{
     res.redirect('/')
 }
 
+// var addCommentToPost = (req,res)=>{
+//     console.log('addComment to post called');
+//     console.log('The comment and the related post are',req.body);
+//     res.end()
+// }
+
 module.exports = addPost
