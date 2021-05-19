@@ -4,5 +4,8 @@
 <footer>
     <p><i class="far fa-copyright"></i>&nbsp;Ajay&nbsp; All rights reserved </p>
     <a href="/"><p>Home</p></a>
-    <a href="/users/profile"><p>Profile</p></a>
+    <%if(locals.user){%>
+        <p><a href="/users/profile/<%=locals.user._id%>">Profile</a>  </p>
+    <%}%>
+    
 </footer>

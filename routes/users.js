@@ -1,7 +1,7 @@
 const express = require('express')
 const passport = require('../config/passport-local-strategy')
 const router = express.Router()
-const {profile, signUp ,signIn,create,createSession, endSession} = require('../controllers/users_controller')
+const {profile, signUp ,signIn,create,createSession, endSession, updateProfile} = require('../controllers/users_controller')
 
 
 
@@ -9,8 +9,8 @@ const {profile, signUp ,signIn,create,createSession, endSession} = require('../c
 // router.use(passport.session());
 
 
-
-router.get('/profile',passport.checkAuthentication,profile)
+router.post ('/profile/update',passport.checkAuthentication,updateProfile)
+router.get('/profile/:id',passport.checkAuthentication,profile)
 
 router.get('/sign-up',signUp)
 router.get('/sign-in',signIn)

@@ -3,7 +3,13 @@ const User = require('../models/user')
 
 var profile = (req,res)=>{
     console.log('res.locals is ',res.locals);
-    res.render('users-profile',{title: 'users profile',user : res.locals.user})
+    User.findById(req.params.id,(err,user)=>{
+        if(err){
+            return console.log(err);
+        }
+        res.render('users-profile',{title: 'users profile',profile_user : user })
+    })
+    // res.render('users-profile',{title: 'users profile',user : res.locals.user})
 }
 
 //render signup page
@@ -62,6 +68,17 @@ var endSession = (req,res)=>{
     })
 }
 
+var updateProfile = async(req,res)=>{
+    
+    try{
+        let updatedUser = await User.findOneAndUpdate({_id : req.user._id},{name : req.body.name, email : req.body.email})
+        res.redirect('/')
+    }catch(e){
+        console.log(e);
+        return 
+    }
+    
+}
 
 
-module.exports = {profile, signUp ,signIn, create,createSession, endSession}
+module.exports = {profile, signUp ,signIn, create,createSession, endSession,updateProfile}

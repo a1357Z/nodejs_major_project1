@@ -1,5 +1,5 @@
 const Post = require('../models/post');
-const { post } = require('../routes');
+const User = require('../models/user')
 
 var home = (req,res)=>{
     //console.log(req.cookies);
@@ -26,8 +26,14 @@ var home = (req,res)=>{
             return console.log(err);
         }
         //console.log('the post is',post);
-        console.log('the posts are ',post);
-        return res.render('home',{title : 'home Page',post})
+        User.find({},(err,users)=>{
+            if(err){
+                return console.log(err);
+            }
+            //console.log('the posts are ',post);
+            return res.render('home',{title : 'home Page',post , users})
+        })
+        
     })
     
 }
