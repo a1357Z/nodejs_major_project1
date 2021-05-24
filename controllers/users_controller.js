@@ -56,22 +56,30 @@ User.findOne({email : req.body.email},(err,user)=>{
 var createSession =(req,res)=>{
     // console.log('the modified request after authentication is ',req);
     // console.log('the cookies are ',res.cookies);
+    req.flash('success','successful signin')
     return res.redirect('/')
 }
 
-var endSession = (req,res)=>{
-    req.session.destroy(err=>{
-        if(err){
-            return console.log(err);
-        }
-        return res.redirect('/users/sign-in')
-    })
+var endSession = async(req,res)=>{
+    req.logout()
+    req.flash('success','successful signout')
+    res.redirect('/')
+
+    // req.session.destroy(err=>{
+    //     if(err){
+    //         return console.log(err);
+    //     }
+        
+    //     return res.redirect('/users/sign-in')
+    // })
+    
 }
 
 var updateProfile = async(req,res)=>{
     
     try{
-        let updatedUser = await User.findOneAndUpdate({_id : req.user._id},{name : req.body.name, email : req.body.email})
+        await User.findOneAndUpdate({_id : req.user._id},{name : req.body.name, email : req.body.email})
+        req.flash('success','profile updated')
         res.redirect('/')
     }catch(e){
         console.log(e);

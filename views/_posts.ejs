@@ -2,9 +2,9 @@
     <h1>Posts are </h1>
     <ul> 
         <%post.forEach(p=>{%>
-            <li>
+            <li id="post-<%=p._id%>">
                 <%if(locals.user && (p.user.id == locals.user.id)){%>
-                    <a href="/posts/delete/<%=p._id%>"> Delete Post</a>
+                    <a class="delete-post-button" href="/posts/delete/<%=p._id%>"> Delete Post</a>
                 <%}%>
                 <p>
                     <%=p.content%>

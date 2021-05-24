@@ -4,7 +4,8 @@ const expressLayouts = require('express-ejs-layouts')
 const db = require('./config/mongoose')
 const cookieParser= require('cookie-parser')
 var sassMiddleware = require('node-sass-middleware')
-
+const flash = require('connect-flash')
+const customMware = require('./config/middleware')
 //used for session cookie
 const session = require('express-session')
 // const passportLocal = require('./config/passport-local-strategy')
@@ -61,7 +62,9 @@ app.use(session({
 
 app.use(passport.initialize())
 app.use(passport.session())
-
+//setting up flash after session
+app.use(flash())
+app.use(customMware.setFlash)
 app.use(passport.setAuthenticatedUser)
 
 //use express router

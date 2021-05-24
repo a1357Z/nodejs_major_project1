@@ -43,11 +43,14 @@ module.exports.addComment =(req,res)=>{
                 // Post.findOneAndUpdate({_id : post._id},{comments : [...post.comments, comment._id ]})
                 post.comments.push(comment._id)
                 post.save()
+                req.flash('success','comment created')
                 res.redirect('/')
             }catch(e){
                 return console.log(e);
             }
             
+        }else{
+            res.redirect('/')
         }
     })
 }
@@ -65,11 +68,13 @@ module.exports.deleteComment=(req,res)=>{
 
             Post.findByIdAndUpdate(comment.post,{$pull : {comments : req.params.id}},async(err,obj)=>{
                 await comment.remove()
+                req.flash('success','comment deleted')
                 return res.redirect('back')
             })
             
             
         }else{
+            req.flash('error','u cannot delete this comment')
             return res.redirect('back');
         }
     })
