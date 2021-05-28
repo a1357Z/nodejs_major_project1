@@ -23,12 +23,12 @@
                     </div>
                 
                 <%}%>
-                <div class="post-comments-list">
+                <div class="post-comments-list" id="comments-<%=p._id%>">
                     <%p.comments.forEach(comment=>{%>
-                        <p>
+                        <p id="comment-<%=comment.id%>">
                             <%=comment.comment%> by : <%=comment.user.name%>
                             <%if(locals.user && locals.user.id == comment.user.id){%>
-                                <span><a href="/comments/delete/<%=comment.id%>">delete comment</a></span> 
+                                <span><a href="/comments/delete/<%=comment.id%>" class="delete-comment">delete comment</a></span> 
                             <%}%>
                              
                         </p>

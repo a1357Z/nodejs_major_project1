@@ -29,6 +29,7 @@ const Post = require('../models/post')
 
 
 module.exports.addComment =(req,res)=>{
+    
     Post.findById(req.body.post, async(err,post)=>{
         if(err){
             return console.log(err);
@@ -43,6 +44,14 @@ module.exports.addComment =(req,res)=>{
                 // Post.findOneAndUpdate({_id : post._id},{comments : [...post.comments, comment._id ]})
                 post.comments.push(comment._id)
                 post.save()
+                await Comment.populate(comment,{path:'user'})
+                if(req.xhr){
+                   return res.json({
+                        data:{
+                            comment
+                        }
+                    })
+                }
                 req.flash('success','comment created')
                 res.redirect('/')
             }catch(e){
@@ -68,6 +77,14 @@ module.exports.deleteComment=(req,res)=>{
 
             Post.findByIdAndUpdate(comment.post,{$pull : {comments : req.params.id}},async(err,obj)=>{
                 await comment.remove()
+                if(req.xhr){
+                    console.log('delete xhr request');
+                    return res.json({
+                        data :{
+                            comment
+                        }
+                    })
+                }
                 req.flash('success','comment deleted')
                 return res.redirect('back')
             })
