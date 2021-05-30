@@ -1,13 +1,20 @@
 const User = require('../models/user')
-
+const ProfilePic = require('../models/profilePic')
 
 var profile = (req,res)=>{
     console.log('res.locals is ',res.locals);
-    User.findById(req.params.id,(err,user)=>{
+    User.findById(req.params.id,async (err,user)=>{
         if(err){
             return console.log(err);
         }
-        res.render('users-profile',{title: 'users profile',profile_user : user })
+        let profilePic = await ProfilePic.findOne({user : req.user._id})
+        console.log('profilePic is ',profilePic);
+        if(profilePic){
+            return res.render('users-profile',{title: 'users profile',profile_user : user,profilePic : profilePic.fileName })
+        }else{
+            return res.render('users-profile',{title: 'users profile',profile_user : user, profilePic : undefined})
+        }
+        
     })
     // res.render('users-profile',{title: 'users profile',user : res.locals.user})
 }
@@ -80,12 +87,11 @@ var updateProfile = async(req,res)=>{
     try{
         await User.findOneAndUpdate({_id : req.user._id},{name : req.body.name, email : req.body.email})
         req.flash('success','profile updated')
-        res.redirect('/')
+        res.redirect('back')
     }catch(e){
         console.log(e);
         return 
-    }
-    
+    } 
 }
 
 

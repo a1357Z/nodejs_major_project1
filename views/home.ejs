@@ -4,7 +4,7 @@
     <section id="feed-posts">
         <%if(locals.user){%>
             
-                <h4>Posts</h4>
+                <h1>Create Post</h1>
                 <form action="/posts/create" method="POST" id="new-post-form">
                     <textarea name="content" id="" cols="30" rows="3" required></textarea>
                     <input type="submit" value="submit">

@@ -1,19 +1,32 @@
 .main-container {
-  min-height: 80vh;
+  min-height: 83vh;
   display: flex;
   // justify-content: space-between;
   #feed-posts {
     width: 70%;
     padding: 10px;
+    border-left: 15px solid peru;
   }
 
   #user-friends {
     width: 30%;
     padding: 10px;
-    border-left: 1px solid grey;
+    border-left: 15px solid peru;
+    border-right: 15px solid peru;
+    text-align: center;
   }
 }
 
 body {
   text-align: left;
+}
+
+#new-post-form {
+  display: flex;
+  flex-direction: column;
+
+  input {
+    width: 200px;
+    margin: 5px auto;
+  }
 }

@@ -4,3 +4,9 @@ h1 {
 
 div {
   min-height: 80vh; }
+
+#profile-pic {
+  max-height: 200px;
+  width: auto;
+  margin: 10px;
+  border-radius: 5px; }

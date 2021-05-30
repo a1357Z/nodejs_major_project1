@@ -1,15 +1,16 @@
 <div class="posts-list-container">
-    <h1>Posts are </h1>
+    <h1>Posts : </h1>
     <ul> 
         <%post.forEach(p=>{%>
             <li id="post-<%=p._id%>">
-                <%if(locals.user && (p.user.id == locals.user.id)){%>
-                    <a class="delete-post-button" href="/posts/delete/<%=p._id%>"> Delete Post</a>
-                <%}%>
+                
                 <p>
                     <%=p.content%>
+                    <%if(locals.user && (p.user.id == locals.user.id)){%>
+                        <a class="delete-post-button" href="/posts/delete/<%=p._id%>"><i class="fas fa-trash-alt"></i></a>
+                    <%}%>
                 </p>
-                <small><span>Author is :</span><%=p.user.name%></small>
+                <small><span>Author : </span><%=p.user.name%></small>
                 
                 
                 <%if(locals.user){%>
@@ -28,7 +29,7 @@
                         <p id="comment-<%=comment.id%>">
                             <%=comment.comment%> by : <%=comment.user.name%>
                             <%if(locals.user && locals.user.id == comment.user.id){%>
-                                <span><a href="/comments/delete/<%=comment.id%>" class="delete-comment">delete comment</a></span> 
+                                <span><a href="/comments/delete/<%=comment.id%>" class="delete-comment"><i class="fas fa-trash-alt"></i></a></span> 
                             <%}%>
                              
                         </p>

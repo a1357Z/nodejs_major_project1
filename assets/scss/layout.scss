@@ -1,8 +1,22 @@
 body {
   margin: 0;
   text-align: center;
+  font-family: 'Quicksand', sans-serif;
 }
 
 .noty-message {
   height: 20px;
+}
+
+input[type='submit'] {
+  font-family: inherit;
+}
+
+button[type='submit'] {
+  font-family: inherit;
+}
+
+.fas,
+.fa-trash-alt {
+  color: peru;
 }
