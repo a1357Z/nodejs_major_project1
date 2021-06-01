@@ -12,7 +12,8 @@
     <form action="/users/profile/update" method="POST" enctype="multipart/form-data">
         <input type="text" name="name" placeholder="name.." value="<%=profile_user.name%>" required>
         <input type="email" name="email" required placeholder="email...">
-        <input type="file" name="avatar" placeholder="upload profile pic" />
+        <input type="file" name="avatar" placeholder="upload profile pic" onchange="handleUpload()" />
+        <!-- <img src="" alt="" id="display-image-preview"> -->
         <input type="submit">
     </form>
 <%}else{%>
@@ -21,3 +22,13 @@
 
 <%}%>
 </div>
+<!-- <script>
+    function handleUpload(event){
+        let reader = new FileReader()
+        reader.onload=function(){
+            var output = document.getElementById('display-image-preview');
+            output.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script> -->
