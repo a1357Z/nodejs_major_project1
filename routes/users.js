@@ -1,5 +1,6 @@
 const express = require('express')
 const passport = require('../config/passport-local-strategy')
+const passportGoogle = require('../config/passport-google-oauthStrategy')
 const router = express.Router()
 const flash = require('connect-flash');
 const multer = require('multer')
@@ -26,5 +27,9 @@ router.post('/create',create)
 router.post('/create-session', passport.authenticate('local',{failureFlash: true,failureRedirect : '/users/sign-in'}),createSession)
 router.get('/logout',endSession)
 
-
+//google authentication
+router.get('/auth/google',passportGoogle.authenticate('google', { scope: ['profile','email'] }));
+router.get('/auth/google/callback', 
+passportGoogle.authenticate('google', { failureRedirect: '/users/sign-in' }),
+  createSession);
 module.exports = router

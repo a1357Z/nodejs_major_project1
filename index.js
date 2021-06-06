@@ -12,7 +12,7 @@ const session = require('express-session')
 const passport = require('./config/passport-local-strategy')
 const MongoStore = require('connect-mongo')
 const passportJWT = require('./config/passport-jwt-strategy')
-
+const passportGoogle = require('./config/passport-google-oauthStrategy')
 const app = express()
 const port = 8000
 
@@ -70,6 +70,8 @@ app.use(passport.setAuthenticatedUser)
 
 //use passport jwt
 app.use(passportJWT.initialize())
+//use passport google
+app.use(passportGoogle.initialize())
 //use express router
 app.use('/',router)
 app.use(express.static('assets'))
