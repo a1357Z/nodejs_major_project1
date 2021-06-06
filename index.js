@@ -11,6 +11,7 @@ const session = require('express-session')
 // const passportLocal = require('./config/passport-local-strategy')
 const passport = require('./config/passport-local-strategy')
 const MongoStore = require('connect-mongo')
+const passportJWT = require('./config/passport-jwt-strategy')
 
 const app = express()
 const port = 8000
@@ -23,7 +24,7 @@ app.use(sassMiddleware({
     outputStyle: 'extended',
     prefix:  '/css'  // Where prefix is at <link rel="stylesheets" href="prefix/style.css"/>
 }));
-
+app.use(express.json())
 app.use(expressLayouts)
 app.use(cookieParser())
 app.use(express.urlencoded())
@@ -67,6 +68,8 @@ app.use(flash())
 app.use(customMware.setFlash)
 app.use(passport.setAuthenticatedUser)
 
+//use passport jwt
+app.use(passportJWT.initialize())
 //use express router
 app.use('/',router)
 app.use(express.static('assets'))
