@@ -2,11 +2,12 @@ const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const passport = require('passport')
 const User = require('../models/user')
+require('dotenv').config()
 
 var opts = {}
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 //pass in the Authorization header with value = Bearer <token>
-opts.secretOrKey = 'secret';
+opts.secretOrKey = process.env.JWT_SECRET;
 // opts.issuer = 'accounts.examplesoft.com';
 // opts.audience = 'yoursite.net';
 passport.use(new JwtStrategy(opts, function(jwt_payload, done) {

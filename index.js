@@ -15,6 +15,8 @@ const passportJWT = require('./config/passport-jwt-strategy')
 const passportGoogle = require('./config/passport-google-oauthStrategy')
 const app = express()
 const port = 8000
+require('dotenv').config()
+
 
 app.use(sassMiddleware({
     /* Options */
@@ -43,7 +45,7 @@ app.set('views','./views')
 app.use(session({
     name : 'codeial',
     //todo change the secret before deployment 
-    secret : 'hihaha',
+    secret : process.env.SESSION_SECRET,
     saveUninitialized : false,
     resave : false,
     cookie : {

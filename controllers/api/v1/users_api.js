@@ -10,7 +10,7 @@ var createSession =async(req,res)=>{
     // console.log('the user is ',user);
     res.json({message : 'signin successful',
       data : {
-        token: jwt.sign(user.toJSON(),'secret',{expiresIn : '10000000'})
+        token: jwt.sign(user.toJSON(),process.env.JWT_SECRET,{expiresIn : '10000000'})
       }
     })
   }catch(e){

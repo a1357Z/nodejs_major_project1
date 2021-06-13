@@ -1,31 +1,6 @@
 const Comment = require('../models/comment')
 const Post = require('../models/post')
-
-// const axios = require('axios')
-// module.exports = addComment = (req,res)=>{
-//     //console.log(req.body.name);
-//     Comment.create({
-//         comment : req.body.comment,
-//         user : req.user._id,
-//         post : req.body.post
-//     }, async(err,obj)=>{
-//         if(err){
-//             return console.log('error is ',err);
-//         }
-//         console.log('created comment ',obj);
-//         try{
-//             await axios.post('http://localhost:8000/posts/addCommentToPost',{
-//                 postId : req.body.post,
-//                 commentId : obj._id
-//             })
-//             res.redirect('back');
-//         }catch(e){
-//             return console.log(e);
-//         }
-        
-       
-//     })
-// }
+const CommentMailer = require('../mailers/comments_mailers')
 
 
 module.exports.addComment =(req,res)=>{
@@ -45,6 +20,8 @@ module.exports.addComment =(req,res)=>{
                 post.comments.push(comment._id)
                 post.save()
                 await Comment.populate(comment,{path:'user'})
+                console.log('the comment is ',comment);
+                CommentMailer.newComment(comment)
                 if(req.xhr){
                    return res.json({
                         data:{
