@@ -14,7 +14,7 @@ exports.newComment =async (comment) => {
     if(err){
       return console.log("error in sending mail",err);
     }
-    return console.log('mail sent with info :',info);
+    return //console.log('mail sent with info :',info);
   })
 }
 

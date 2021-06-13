@@ -1,7 +1,8 @@
 const Comment = require('../models/comment')
 const Post = require('../models/post')
 const CommentMailer = require('../mailers/comments_mailers')
-
+const commentEmailWorker = require('../workers/comment_email_worker')
+const queue = require('../config/kue')
 
 module.exports.addComment =(req,res)=>{
     
@@ -20,8 +21,14 @@ module.exports.addComment =(req,res)=>{
                 post.comments.push(comment._id)
                 post.save()
                 await Comment.populate(comment,{path:'user'})
-                console.log('the comment is ',comment);
-                CommentMailer.newComment(comment)
+                //console.log('the comment is ',comment);
+                let job = queue.create('emails', comment).save(function(err){
+                    if(err){
+                       return console.log('err in emails queue',err);
+                    }
+                    console.log('the job id is ',job.id);
+                })
+                //CommentMailer.newComment(comment)
                 if(req.xhr){
                    return res.json({
                         data:{
