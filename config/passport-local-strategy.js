@@ -1,6 +1,7 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const User = require('../models/user')
+const ResetPasswordToken = require('../models/resetPasswordToken')
 
 //authentication using passport
 passport.use(new LocalStrategy({
@@ -48,9 +49,16 @@ passport.checkAuthentication = function(req,res,next){
     return res.redirect('/users/sign-in')
 }
 
-passport.setAuthenticatedUser = function(req,res,next){
+passport.setAuthenticatedUser = async function(req,res,next){
     if(req.isAuthenticated()){
         res.locals.user = req.user
+        try{
+            let resetPasswordToken = await ResetPasswordToken.findOne({user: req.user._id})
+            res.locals.resetPasswordToken = resetPasswordToken.token
+        }catch(e){
+            console.log('could not find token');
+        }
+        
     }
     next()
 }

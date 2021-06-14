@@ -5,6 +5,7 @@
 
     <ul>
         <%if(locals.user){%>
+            <li><a href="/users/reset-password/<%=locals.resetPasswordToken%>">Reset Password</a></li>
             <li><a href="/users/profile/<%=locals.user._id%>"><%=locals.user.name%></a></li>
             <li><a href="/users/logout">Logout</a></li>
         <%}else{%>

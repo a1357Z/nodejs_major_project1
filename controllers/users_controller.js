@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const ProfilePic = require('../models/profilePic')
+const ResetPasswordToken = require('../models/resetPasswordToken')
 
 var profile = (req,res)=>{
     console.log('res.locals is ',res.locals);
@@ -46,10 +47,11 @@ User.findOne({email : req.body.email},(err,user)=>{
     }
     if(!user){
         console.log(req.body);
-        User.create(req.body,(err,user)=>{
+        User.create(req.body,async (err,user)=>{
             if(err){
                 return console.log('error in creating user',err);
             }
+            await ResetPasswordToken.create({user:user._id, token: Math.random().toString(36).substring(2)})
            return  res.redirect('/users/sign-in')
         })
     }else{
@@ -94,5 +96,46 @@ var updateProfile = async(req,res)=>{
     } 
 }
 
+const resetPassword = async (req, res) => {
+    try {
+        let token = req.params.token
+        const foundToken = await ResetPasswordToken.findOne({ user: req.user._id, token}) 
+        if(!foundToken){
+            return res.redirect('back')
+        }
+        res.render('_reset_password',{ title:'reset password'})
 
-module.exports = {profile, signUp ,signIn, create,createSession, endSession,updateProfile}
+    } catch (error) {
+        console.log('error in password reset', error);
+        res.redirect('back')
+    }
+    
+}
+
+const updatePassword = async (req, res) => {
+    try {
+        const {password, rePassword} = req.body
+        if(password !== rePassword){
+            req.flash('error','passwords donot match')
+        return res.redirect('back')
+        }
+        await User.findOneAndUpdate({_id: req.user._id},{password})
+        await ResetPasswordToken.findOneAndUpdate(
+                {user: req.user._id, token: res.locals.resetPasswordToken},
+                {token: Math.random().toString(36).substring(2)}
+            )
+        res.redirect('/users/logout')
+
+    } catch (error) {
+        console.log(error);
+        res.redirect('back')
+    }
+    
+
+}
+
+
+
+
+module.exports = {profile, signUp ,signIn, create,createSession,
+     endSession,updateProfile, resetPassword, updatePassword}
