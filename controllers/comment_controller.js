@@ -3,6 +3,8 @@ const Post = require('../models/post')
 const CommentMailer = require('../mailers/comments_mailers')
 const commentEmailWorker = require('../workers/comment_email_worker')
 const queue = require('../config/kue')
+const Like = require('../models/like')
+const { deleteMany } = require('../models/profilePic')
 
 module.exports.addComment =(req,res)=>{
     
@@ -60,6 +62,7 @@ module.exports.deleteComment=(req,res)=>{
             // await post.save()
 
             Post.findByIdAndUpdate(comment.post,{$pull : {comments : req.params.id}},async(err,obj)=>{
+                Like.deleteMany({onModel: 'Comment', ON:comment._id})
                 await comment.remove()
                 if(req.xhr){
                     console.log('delete xhr request');

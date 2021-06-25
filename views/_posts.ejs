@@ -6,6 +6,13 @@
                 
                 <p>
                     <%=p.content%>
+                    <%if(locals.user){%>
+                        <button class="post-like" >
+                            <i class="far fa-thumbs-up" ></i>
+                            <span class="like-count"><%=p.likes.length%></span>likes 
+                        </button>
+                    <%}%>
+                    
                     <%if(locals.user && (p.user.id == locals.user.id)){%>
                         <a class="delete-post-button" href="/posts/delete/<%=p._id%>"><i class="fas fa-trash-alt"></i></a>
                     <%}%>
@@ -27,7 +34,13 @@
                 <div class="post-comments-list" id="comments-<%=p._id%>">
                     <%p.comments.forEach(comment=>{%>
                         <p id="comment-<%=comment.id%>">
-                            <%=comment.comment%> by : <%=comment.user.name%>
+                            <%=comment.comment%> : <%=comment.user.name%>
+                            <%if(locals.user){%>
+                                <button class="like" >
+                                    <i class="far fa-thumbs-up" ></i>
+                                    <span class="like-count"><%=comment.likes.length%></span>likes 
+                                </button>
+                            <%}%>
                             <%if(locals.user && locals.user.id == comment.user.id){%>
                                 <span><a href="/comments/delete/<%=comment.id%>" class="delete-comment"><i class="fas fa-trash-alt"></i></a></span> 
                             <%}%>
@@ -41,3 +54,59 @@
        <% })%>
     </ul>
 </div>
+
+<script>
+
+//for the handling the already loaded posts from the database
+function allLikeHandlerForPosts(){
+    <%post.forEach(p=>{%>
+        $(`#post-<%=p._id%> .post-like`).on('click',function(){
+            let target = $(`#post-<%=p._id%> .post-like span`)
+            let likeCount = parseInt(target.html())
+            console.log('sending toggle like request on post ' + likeCount);
+            $.ajax({
+                method: 'GET',
+                url: `/likes/toggle?id=<%=p._id%>&type=Post`,
+                success: function(data){
+                    if(data.data.deleted){
+                        target.html(likeCount - 1)
+                    }else{
+                        target.html(likeCount + 1)
+                    }
+                },
+                error: function(xhr,errType){
+                    console.log(errType);
+                }
+            })
+        })
+
+        //handling for comments
+        <%p.comments.forEach(comment=>{%>
+            $('#comment-<%=comment.id%> .like').on('click',function(){
+                let target = $(`#comment-<%=comment.id%> .like span`)
+                let likeCount = parseInt(target.html())
+                console.log('sending toggle like request on comment',likeCount);
+                $.ajax({
+                    method: 'GET',
+                    url: `/likes/toggle?id=<%=comment._id%>&type=Comment`,
+                    success: function(data){
+                        if(data.data.deleted){
+                            target.html(likeCount - 1)
+                        }else{
+                            target.html(likeCount + 1)
+                        }
+                    },
+                    error: function(xhr,errType){
+                        console.log(errType);
+                    }
+                })
+            })
+        <%})%>
+    <%})%>
+}
+
+allLikeHandlerForPosts()
+
+
+
+</script>

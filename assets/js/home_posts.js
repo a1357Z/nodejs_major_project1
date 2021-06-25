@@ -25,6 +25,30 @@
     })
   }
 
+  //method to handle like for a recently added post
+  function likeHandlerForPost(p){
+    $(`#post-${p._id} .like`).on('click',function(){
+      let target = $(`#post-${p._id} .like span`)
+      let likeCount = parseInt(target.html())
+      console.log('target is ',target);
+      console.log('likeCount is ', likeCount);
+      $.ajax({
+          method: 'GET',
+          url: `/likes/toggle?id=${p._id}&type=Post`,
+          success: function(data){
+              if(data.data.deleted){
+                  target.html(likeCount - 1)
+              }else{
+                  target.html(likeCount + 1)
+              }
+          },
+          error: function(xhr,errType){
+              console.log(errType);
+          }
+      })
+  })
+  }
+
   //method to add a post to dom
   function createPost(post) {
     console.log('the data is ', post)
@@ -32,6 +56,10 @@
       `<li id="post-${post._id}">         
                 <p>
                 ${post.content}
+                  <button class="like" >
+                      <i class="far fa-thumbs-up" ></i>
+                      <span class="like-count">0</span>likes
+                  </button>
                 <a class="delete-post-button" id="delete-post-button-${post._id}"  href="/posts/delete/${post._id}" ><i class="fas fa-trash-alt"></i></a>
                 </p>
                 <small><span>Author :</span>${post.user.name}</small>  
@@ -47,6 +75,7 @@
             </li>`
     )
     deletePost($(`#delete-post-button-${post._id}`))
+    likeHandlerForPost(post)
   }
 
   //create a post in the backend
@@ -97,14 +126,42 @@
     deletePost($(this))
   })
 
+  function makeNewCommentLikable(comment) {
+    $(`#comment-${comment._id} .like`).on('click',function(){
+      let target = $(`#comment-${comment._id} .like span`)
+      let likeCount = parseInt(target.html())
+      console.log('sending toggle like request on comment',likeCount);
+      $.ajax({
+          method: 'GET',
+          url: `/likes/toggle?id=${comment._id}&type=Comment`,
+          success: function(data){
+              if(data.data.deleted){
+                  target.html(likeCount - 1)
+              }else{
+                  target.html(likeCount + 1)
+              }
+          },
+          error: function(xhr,errType){
+              console.log(errType);
+          }
+      })
+    })
+  }
+
   //displaying the comments in the page
   function displayComment(comment) {
     $(`#comments-${comment.post}`).prepend(
       `<p id="comment-${comment._id}">
-            ${comment.comment} by : ${comment.user.name}
-                <span><a href="/comments/delete/${comment._id}" class="delete-comment"><i class="fas fa-trash-alt"></i></a></span> 
+            ${comment.comment} : ${comment.user.name}
+            <button class="like" >
+                <i class="far fa-thumbs-up" ></i>
+                <span class="like-count">0</span>likes 
+            </button>
+            <span><a href="/comments/delete/${comment._id}" class="delete-comment"><i class="fas fa-trash-alt"></i></a></span> 
         </p>`
     )
+    console.log('calling makeNewCommentLikable');
+    makeNewCommentLikable(comment)
   }
   //adds the ajax way of deleting on the target comment
   function deleteComments(target) {
@@ -167,4 +224,6 @@
   $('.delete-comment').each(function () {
     deleteComments($(this))
   })
+
+  
 }

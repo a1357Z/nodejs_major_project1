@@ -38,7 +38,12 @@ var home = async(req,res)=>{
 
     try{
         let post = await Post.find({}).sort('-createdAt').populate('user').populate({path : 'comments', populate :{path:'user'}})
+        // post = post.map(p => {
+        //     p.likes = p.likes.length
+        //     return p;
+        // })
         let users = await User.find({})
+        console.log('the posts are ',post);
         return res.render('home',{title : 'home Page',post , users})
     }catch(e){
         return console.log(e);

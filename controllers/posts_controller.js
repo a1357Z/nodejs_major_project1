@@ -1,6 +1,7 @@
 const Post = require('../models/post')
 const Comment = require('../models/comment')
 const mongoose = require('mongoose')
+const Like = require('../models/like')
 
 var addPost = async (req,res)=>{
     try{
@@ -52,7 +53,8 @@ Post.findById(req.params.id, async (err,post)=>{
         //         }
         //     })
         // })
-
+        await Like.deleteMany({onModel: 'Post', ON: post._id})
+        await Like.deleteMany({onModel: 'Comment', ON:{ $in: post.comments } })
         Comment.deleteMany({post : req.params.id},(err)=>{
             if(err){
                 return console.log(err);
