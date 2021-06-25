@@ -5,7 +5,7 @@ const router = express.Router()
 const flash = require('connect-flash');
 const multer = require('multer')
 const {profile, signUp ,signIn,create,createSession, 
-  endSession, updateProfile, resetPassword, updatePassword} = require('../controllers/users_controller')
+  endSession, updateProfile, resetPassword, updatePassword, toggleFriend} = require('../controllers/users_controller')
 const fileHandler = require('../utils/fileUploadHandler')
 const path = require('path')
 router.use(flash())
@@ -30,6 +30,8 @@ router.get('/logout',endSession)
 //show reset password page
 router.get('/reset-password/:token',passport.checkAuthentication, resetPassword)
 router.post('/update-password',passport.checkAuthentication,updatePassword)
+//add friend
+router.post('/toggle-friend',passport.checkAuthentication,toggleFriend)
 
 //google authentication
 router.get('/auth/google',passportGoogle.authenticate('google', { scope: ['profile','email'] }));

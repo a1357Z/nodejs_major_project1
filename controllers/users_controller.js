@@ -1,22 +1,52 @@
 const User = require('../models/user')
 const ProfilePic = require('../models/profilePic')
 const ResetPasswordToken = require('../models/resetPasswordToken')
+const FriendShip =  require('../models/friendShip')
 
-var profile = (req,res)=>{
-    console.log('res.locals is ',res.locals);
-    User.findById(req.params.id,async (err,user)=>{
-        if(err){
-            return console.log(err);
-        }
-        let profilePic = await ProfilePic.findOne({user : req.user._id})
-        console.log('profilePic is ',profilePic);
-        if(profilePic){
-            return res.render('users-profile',{title: 'users profile',profile_user : user,profilePic : profilePic.fileName })
+
+var profile = async (req,res)=>{
+    
+    try {
+        console.log('res.locals is ',res.locals);
+
+        let user = await User.findById(req.params.id).select('name email friends')
+        if(user){
+            console.log('the profile id is ',req.params.id);
+            console.log('the user id is ',req.user._id);
+            let profilePic = await ProfilePic.findOne({user : req.params.id})
+            //finding if friendShip exists between the user the profile we are viewing
+            
+            let friendShipId = await FriendShip.findOne(
+                { $or: [{ from: req.user._id,to: req.params.id},{ from: req.params.id,to: req.user._id}]}
+            )
+            console.log('profilePic is ',profilePic);
+            console.log('friendShipId found is ',friendShipId);
+            if(profilePic){
+                if(friendShipId){
+                    return res.render('users-profile',{title: 'users profile',
+                        profile_user : user,profilePic : profilePic.fileName, friendShipId: friendShipId._id })
+                }else{
+                    return res.render('users-profile',{title: 'users profile',profile_user : user,profilePic : profilePic.fileName, friendShipId: null })
+                }
+                
+            }else{
+                if(friendShipId){
+                    return res.render('users-profile',{title: 'users profile',
+                        profile_user : user, profilePic : undefined, friendShipId: friendShipId._id})
+                }else{
+                    return res.render('users-profile',{title: 'users profile',profile_user : user, profilePic : undefined, friendShipId: null })
+                }
+                
+            } 
         }else{
-            return res.render('users-profile',{title: 'users profile',profile_user : user, profilePic : undefined})
+            res.redirect('back')
         }
-        
-    })
+          
+    } catch (error) {
+        console.log('error in profile',error);
+        res.redirect('back');
+    }
+    
     // res.render('users-profile',{title: 'users profile',user : res.locals.user})
 }
 
@@ -134,8 +164,53 @@ const updatePassword = async (req, res) => {
 
 }
 
+const toggleFriend = async (req, res) => {
+    try {
+        const { friendShipId, profileId } = req.body
+        if(friendShipId){
+            let user = await User.findOne({ _id : req.user._id, friends:friendShipId})
+            if(user){
+                //remove friend
+                await User.findOneAndUpdate({_id: req.user._id},{$pull: { friends: friendShipId}})
+                await User.findOneAndUpdate({_id: profileId},{$pull: { friends: friendShipId}})
+                await FriendShip.findByIdAndDelete(friendShipId)
+                console.log('friendShip removed');
+                return res.json({
+                    message: 'deleted friendShip',
+                    status: 'success'
+                })
+            }else{
+                //no friendShip record found
+                return res.json({
+                    message : 'the friendShipId is incorrect',
+                    status: 'error'
+                })
+            }
+        }else{
+            //add as friend
+            let friendShip = await FriendShip.create({
+                from: req.user._id,
+                to: profileId
+            })
+            await User.findOneAndUpdate({_id: req.user._id},{$push: { friends: friendShip._id}})
+            await User.findOneAndUpdate({_id: profileId},{$push: { friends: friendShip._id}})
+            console.log('friendShip added');
+            return res.json({
+                message: 'created friendShip',
+                status: 'success',
+                friendShipId: friendShip._id
+            })
+        }
+    } catch (error) {
+        console.log('error in toggleFriend',error);
+        throw error
+    }
+    
+    
+}
+
 
 
 
 module.exports = {profile, signUp ,signIn, create,createSession,
-     endSession,updateProfile, resetPassword, updatePassword}
+     endSession,updateProfile, resetPassword, updatePassword, toggleFriend}

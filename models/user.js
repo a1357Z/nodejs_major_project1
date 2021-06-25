@@ -13,7 +13,11 @@ const userSchema = new mongoose.Schema({
     name : {
         type : String,
         required : true
-    }
+    },
+    friends:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'friendModel'
+    }]
 },{timestamps : true})
 
 const User = new mongoose.model('User',userSchema)

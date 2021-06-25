@@ -19,7 +19,12 @@
 <%}else{%>
     <p><%=profile_user.name%></p>
     <p><%=profile_user.email%></p>
-
+    <%if(friendShipId){%>
+        <button id="toggle-friend">disconnect</button>
+    <%}else{%>
+        <button id="toggle-friend">connect</button>
+    <%}%>
+    
 <%}%>
 </div>
 <!-- <script>
@@ -32,3 +37,41 @@
         reader.readAsDataURL(event.target.files[0]);
     }
 </script> -->
+<script>
+    var fId = "<%=friendShipId%>" 
+    let id = "<%=profile_user.id%>"
+    $('#toggle-friend').on('click',function(){
+        console.log('toggle-friend clicked');
+        let content =  $('#toggle-friend').html()
+        let data;
+        if(content === "connect"){
+            data = {     
+                profileId: id.toString()
+            }    
+        }else{
+            data = {
+                friendShipId: fId,
+                profileId: id.toString()
+            }
+        }
+
+        $.ajax({
+            method: 'POST',
+            url: '/users/toggle-friend',
+            data,
+            success: function(data){
+                if(data.status === 'success'){
+                    fId = data.friendShipId ? data.friendShipId : null
+                    if(content === 'connect'){
+                        $('#toggle-friend').html('disconnect')
+                    }else{
+                        $('#toggle-friend').html('connect')
+                    }
+                }
+            },
+            error: function(xhr,errType){
+                console.log(xhr);
+            }
+        })
+    })
+</script>

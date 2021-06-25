@@ -15,16 +15,28 @@
     </section>  
     
     
-    <section id="user-friends">
-        <h1>Friends : </h1>
-        <%if(locals.user){%>
-            <%for(u of users){%>
-                <p>
-                    <a href="/users/profile/<%=u._id%>"><%=u.name%></a>
-                </p>
-                
+    <section id="all-users">
+        <div>
+            <h1>Users : </h1>
+            <%if(locals.user){%>
+                <%for(u of users){%>
+                    <p>
+                        <a href="/users/profile/<%=u._id%>"><%=u.name%></a>
+                    </p>
+                    
+                <%}%>
             <%}%>
-        <%}%>
+        </div>
+
+        <div>
+            <%if(locals.user){%>
+                <h1>Friends</h1>
+                <%friends.forEach(friend => {%>
+                    <p><%=friend%></p>    
+                <%})%>
+            <%}%>
+        </div>
+        
     </section>
 
    <script src="/js/home_posts.js">
