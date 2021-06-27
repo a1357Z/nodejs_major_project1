@@ -78,6 +78,12 @@ app.use(passportGoogle.initialize())
 app.use('/',router)
 app.use(express.static('assets'))
 
+//setup the chat server to be used with socket.io
+const chatServer = require('http').createServer(app)
+const chatSockets = require('./config/chat_socket').chatSockets(chatServer)
+chatServer.listen(5000)
+console.log('chatServer is listening on port 5000');
+
 app.listen(port,(err)=>{
     if(err){
         return console.log(`Error : ${err}`);

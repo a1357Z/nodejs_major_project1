@@ -39,11 +39,26 @@
         
     </section>
 
-   <script src="/js/home_posts.js">
-   
-      
-   </script>
-  
+    <div id="chat-box">
+        <div id="chat">
+        </div>
+        
+        <form action="">
+            <input type="text" placeholder="message" id="message">
+            <button id="message-submit">send</button>
+        </form>
+    </div>
+
+   <script src="/js/home_posts.js"></script>
+   <script src="https://cdn.socket.io/4.1.2/socket.io.min.js" integrity="sha384-toS6mmwu70G0fw54EGlWWeA4z3dyJ+dlXBtSURSKN4vyRFOcxd3Bzjj/AoOwY+Rg" crossorigin="anonymous"></script>
+
+   <script src="/js/chat_engine.js"></script>
+    <script>
+        <%if(locals.user){%>
+            new ChatEngine('chat-box', "<%=locals.user.email%>" )
+        <%}%>
+        
+    </script>
     
     
 </div>
