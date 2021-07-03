@@ -43,10 +43,10 @@ var home = async(req,res)=>{
         //     return p;
         // })
         let users = await User.find({})
-        console.log('the posts are ',post);
+        //console.log('the posts are ',post);
         if(res.locals.user){
             let userData = await User.findOne({_id: res.locals.user.id}).populate({path :'friends', populate: {path: 'from to', select: 'name'}})
-            console.log('userdata is ',userData);
+            //console.log('userdata is ',userData);
             let friends = userData.friends.map(friendShip => {
                 if(friendShip.from.name !== userData.name){
                     return friendShip.from.name

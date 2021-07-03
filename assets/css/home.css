@@ -39,3 +39,8 @@ body {
 
 .right {
   text-align: right; }
+
+#close-chat-box {
+  position: absolute;
+  top: 0;
+  right: 0; }

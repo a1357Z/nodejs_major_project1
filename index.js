@@ -14,18 +14,24 @@ const MongoStore = require('connect-mongo')
 const passportJWT = require('./config/passport-jwt-strategy')
 const passportGoogle = require('./config/passport-google-oauthStrategy')
 const app = express()
+require('./config/view-helpers')(app)
 const port = 8000
+const env = require('./config/environment')
+const logger = require('morgan')
 require('dotenv').config()
+const path = require('path')
 
+if(env.name === 'development'){
+    app.use(sassMiddleware({
+        /* Options */
+        src:path.join(__dirname,env.asset_path,'/scss'),
+        dest: path.join(__dirname,env.asset_path,'/css'),
+        debug: true,
+        outputStyle: 'extended',
+        prefix:  '/css'  // Where prefix is at <link rel="stylesheets" href="prefix/style.css"/>
+    }));
+}
 
-app.use(sassMiddleware({
-    /* Options */
-    src: './assets/scss',
-    dest: './assets/css',
-    debug: true,
-    outputStyle: 'extended',
-    prefix:  '/css'  // Where prefix is at <link rel="stylesheets" href="prefix/style.css"/>
-}));
 app.use(express.json())
 app.use(expressLayouts)
 app.use(cookieParser())
@@ -76,7 +82,12 @@ app.use(passportJWT.initialize())
 app.use(passportGoogle.initialize())
 //use express router
 app.use('/',router)
-app.use(express.static('assets'))
+app.use(express.static(env.asset_path))
+
+//use logger
+app.use(logger(env.morgan.mode,env.morgan.options))
+
+console.log('the env is ',env);
 
 //setup the chat server to be used with socket.io
 const chatServer = require('http').createServer(app)

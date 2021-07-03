@@ -8,3 +8,5 @@ Launch the installed distro from your Windows Store and then install redis-serve
 > sudo service redis-server restart
 > Execute a simple Redis command to verify your Redis server is running and available:
 > $ redis-cli
+
+> run the gulp using command 'gulp command'

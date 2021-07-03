@@ -2,12 +2,13 @@ const googleStrategy = require('passport-google-oauth').OAuth2Strategy
 const passport = require('passport')
 const crypto = require('crypto')
 const User = require('../models/user')
+const env = require('./environment')
 require('dotenv').config()
 
 passport.use(new googleStrategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  callbackURL: "http://localhost:8000/users/auth/google/callback"
+  callbackURL: env.google_callback_url,
 },
 function(accessToken, refreshToken, profile, done) {
   // User.findOrCreate({ googleId: profile.id }, function (err, user) {
