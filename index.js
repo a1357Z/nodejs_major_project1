@@ -82,7 +82,7 @@ app.use(passportJWT.initialize())
 app.use(passportGoogle.initialize())
 //use express router
 app.use('/',router)
-app.use(express.static(env.asset_path))
+app.use(express.static(env.asset_path + '/'))
 
 //use logger
 app.use(logger(env.morgan.mode,env.morgan.options))
