@@ -7,8 +7,8 @@ module.exports = (app) => {
       return filePath
     }else{
       let completePath = '/'+ JSON.parse(fs.readFileSync(path.join(__dirname,'../public/assets/rev-manifest.json')))[filePath]
-      console.log(`modified filepath for ${filePath} is ${completePath}`);
-      return completePath
+      console.log(`modified filepath for ${filePath} is ${path.join(__dirname,'../public/assets',completePath)}`);
+      return path.join(__dirname,'../public/assets',completePath) 
     }
   }
 }

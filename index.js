@@ -35,7 +35,7 @@ if(env.name === 'development'){
 app.use(express.json())
 app.use(expressLayouts)
 app.use(cookieParser())
-app.use(express.urlencoded())
+app.use(express.urlencoded({ extended: true }))
 
 //extract the style and scripts from the subpages into the layout
 app.set('layout extractStyles',true)
