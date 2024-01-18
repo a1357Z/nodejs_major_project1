@@ -1,3 +1,14 @@
+
+A social media platform where users can register, create and
+manage posts, engage with comments and likes, upload proﬁle pictures,
+connect with friends, and collaborate in group chats.
+
+Implemented user login with passport-google-oauth20 and passport-local-strategy
+
+Built using Ejs templating engine, Nodejs(Expressjs), andMongoDB(Mongoose)
+
+
+Setting up redis:
 Launch the installed distro from your Windows Store and then install redis-server. The following example works with Ubuntu (you’ll need to wait for initialization and create a login upon first use):
 
 > sudo apt-get update
